@@ -7,19 +7,32 @@
 
 import Foundation
 
-struct ToDo {
+struct ToDo: Codable {
     var text: String
     var isCompleted: Bool
     var isIgnored: Bool
     var dueDate: Date
     var notes: String?
-    
     var title: String {
         return text
     }
     
+    static let DocumentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("ToDos.plist")
+    
+    
     static func loadToDos() -> [ToDo]? {
-        return nil
+        guard let codedToDos = try? Data(contentsOf: ArchiveURL) else {
+            return loadSampleToDos()
+        }
+        let propertyListDecoder = PropertyListDecoder()
+        return try? propertyListDecoder.decode([ToDo].self, from: codedToDos)
+    }
+    
+    static func saveToDos(_ toDos: [ToDo]) {
+        let propertyListEncoder = PropertyListEncoder()
+        let codedToDos = try! propertyListEncoder.encode(toDos)
+        try! codedToDos.write(to: ArchiveURL, options: .noFileProtection)
     }
     
     static func loadSampleToDos() -> [ToDo] {

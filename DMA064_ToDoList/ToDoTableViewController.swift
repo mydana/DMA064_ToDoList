@@ -16,6 +16,7 @@ class ToDoTableViewController: UITableViewController, ToDoCellDelegate {
             todo.isCompleted.toggle()
             todos[indexPath.row] = todo
             tableView.reloadRows(at: [indexPath], with: .automatic)
+            ToDo.saveToDos(todos)
         }
     }
     
@@ -53,6 +54,7 @@ class ToDoTableViewController: UITableViewController, ToDoCellDelegate {
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
             }
         }
+        ToDo.saveToDos(todos)
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -63,6 +65,7 @@ class ToDoTableViewController: UITableViewController, ToDoCellDelegate {
         if editingStyle == .delete {
             todos.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            ToDo.saveToDos(todos)
         }
     }
     
