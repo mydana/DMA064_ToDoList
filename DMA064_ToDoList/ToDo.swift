@@ -11,7 +11,7 @@ struct ToDo {
     var text: String
     var isCompleted: Bool
     var isIgnored: Bool
-    var dueDate: Date?
+    var dueDate: Date
     var notes: String?
     
     var title: String {
@@ -25,7 +25,14 @@ struct ToDo {
     static func loadSampleToDos() -> [ToDo] {
         let todo1 = ToDo(text: "Buy milk", isCompleted: false, isIgnored: false, dueDate: Date(), notes: "")
         let todo2 = ToDo(text: "Learn SwiftUI", isCompleted: true, isIgnored: false, dueDate: Date(timeIntervalSinceNow: 3600), notes: "")
-        let todo3 = ToDo(text: "Go for a walk", isCompleted: false, isIgnored: true, dueDate: nil, notes: "")
+        let todo3 = ToDo(text: "Go for a walk", isCompleted: false, isIgnored: true, dueDate: Date(timeIntervalSinceNow: 3600), notes: "")
         return [todo1, todo2, todo3]
     }
+    
+    static let dueDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        return formatter
+    }()
 }
